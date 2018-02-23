@@ -285,12 +285,12 @@ def main():
             if pet and pet.type == 'dog':
                 print(answer.format(person.name, 'dog', pet.name))
 
-    if q_trip.subject.lower() == 'who' and q_trip.object == trip:
+    if q_trip.subject.lower() == 'who' and q_trip.object == 'Japan':
         answer = '{} is flying to {}.'
 
         for person in persons:
             trip = get_persons_trip(person.name)
-            if pet and pet.type == 'dog':
+            if trip and trip.type == 'Japan':
                 print(answer.format(person.name, trip.name))
 
 if __name__ == '__main__':
