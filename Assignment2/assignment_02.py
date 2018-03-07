@@ -148,4 +148,45 @@ print(df2.iat[0,1])
 
 #Question 3
 
+driver.get('http://www.mlb.com')
 
+stats_header_bar = driver.find_element_by_class_name('megamenu-navbar-overflow__menu-item--stats')
+
+stats_header_bar.click()
+
+stats_line_items = stats_header_bar.find_elements_by_tag_name('li')
+
+stats_line_items[0].click()
+
+player_season_element = driver.find_element_by_id('sp_hitting_season')
+player_select = Select(player_season_element)
+player_select.select_by_value('2017')
+
+season_type_element = driver.find_element_by_id('sp_hitting_game_type')
+season_type_select = Select(season_type_element)
+season_type_select.select_by_value("'R'")
+
+data_div_3 = driver.find_element_by_id('datagrid')
+data_html_3 = data_div_3.get_attribute('innerHTML')
+
+def extract_player_hitting_data(data_element):
+    data_html_3 = data_element.get_attribute('innerHTML')
+    soup_3 = bs4.BeautifulSoup(data_html_3, 'html5lib')
+
+    column_names = [t.text.replace('▼', ' ').replace('▲', ' ').strip() for t in soup_3.thead.tr.findAll('th')]
+
+    row_lists = []
+    for row in soup_3.tbody.findAll('tr'):
+        row_lists.append([col.text for col in row.findAll('td')])
+
+    df = pd.DataFrame(row_lists, columns=column_names)
+
+    numeric_fields = ['HR']
+    for field in numeric_fields:
+        df[field] = pd.to_numeric(df[field])
+
+    return df
+
+df3 = extract_player_hitting_data(data_div_3)
+
+df3.head()
