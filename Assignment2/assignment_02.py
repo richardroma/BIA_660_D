@@ -217,7 +217,7 @@ hitting_average_select.select_by_value('2015')
 
 season_type_element = driver.find_element_by_id('sp_hitting_game_type')
 season_type_select = Select(season_type_element)
-season_type_select.select_by_value("'R'")
+season_type_select.select_by_value("""'R'""")
 
 wait = WebDriverWait(driver, 10)
 
@@ -258,5 +258,11 @@ def extract_player_ab_data(data_element):
 df4 = extract_player_ab_data(data_div_4)
 
 df4.to_csv('/Users/rickroma/Desktop/Assignment2/Question_4.csv')
+
+#print(df4.loc[1:'Player', 'Team', 'Pos'])
+
+#Question 5
+
+
 
 
