@@ -277,10 +277,42 @@ hitting_average_element = driver.find_element_by_id('sp_hitting_season')
 hitting_average_select = Select(hitting_average_element)
 hitting_average_select.select_by_value('2014')
 
+wait = WebDriverWait(driver, 10)
+
+latin_stats = wait.until(EC.visibility_of_element_located((By.ID, 'datagrid')))
+
+print('The All Star dropdown in the header was loaded successfully. The mouse will move over the element after a short delay')
+normal_delay = random.normalvariate(2, 0.5)
+print('Sleeping for {} seconds'.format(normal_delay))
+time.sleep(normal_delay)
+print('Now moving mouse...')
+ActionChains(driver).move_to_element(latin_stats).perform()
+
 season_type_element = driver.find_element_by_id('sp_hitting_game_type')
 season_type_select = Select(season_type_element)
 season_type_select.select_by_value("""'A'""")
 
+data_div_5 = driver.find_element_by_id('datagrid')
+data_html_5 = data_div_5.get_attribute('innerHTML')
 
+def extract_player_ab_data(data_element):
+    data_html_5 = data_element.get_attribute('innerHTML')
+    soup_5 = bs4.BeautifulSoup(data_html_5, 'html5lib')
 
+    column_names = [t.text.replace('▼', ' ').replace('▲', ' ').strip() for t in soup_5.thead.tr.findAll('th')]
 
+    row_lists = []
+    for row in soup_5.tbody.findAll('tr'):
+        row_lists.append([col.text for col in row.findAll('td')])
+
+    df = pd.DataFrame(row_lists, columns=column_names)
+
+    numeric_fields = ['HR']
+    for field in numeric_fields:
+        df[field] = pd.to_numeric(df[field])
+
+    return df
+
+df5 = extract_player_ab_data(data_div_5)
+
+df5.to_csv('/Users/rickroma/Desktop/Assignment2/Question_5.csv')
