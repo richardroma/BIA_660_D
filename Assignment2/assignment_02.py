@@ -189,4 +189,4 @@ def extract_player_hitting_data(data_element):
 
 df3 = extract_player_hitting_data(data_div_3)
 
-df3.head()
+df3.to_csv('/Users/rickroma/Desktop/Assignment2/Question_3.csv')
