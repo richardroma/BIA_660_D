@@ -263,6 +263,24 @@ df4.to_csv('/Users/rickroma/Desktop/Assignment2/Question_4.csv')
 
 #Question 5
 
+driver.get('http://www.mlb.com')
+
+stats_header_bar = driver.find_element_by_class_name('megamenu-navbar-overflow__menu-item--stats')
+
+stats_header_bar.click()
+
+stats_line_items = stats_header_bar.find_elements_by_tag_name('li')
+
+stats_line_items[0].click()
+
+hitting_average_element = driver.find_element_by_id('sp_hitting_season')
+hitting_average_select = Select(hitting_average_element)
+hitting_average_select.select_by_value('2014')
+
+season_type_element = driver.find_element_by_id('sp_hitting_game_type')
+season_type_select = Select(season_type_element)
+season_type_select.select_by_value("""'A'""")
+
 
 
 
