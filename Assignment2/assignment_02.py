@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
@@ -25,10 +26,9 @@ stats_line_items[2].click()
 
 hitting_season_element = driver.find_element_by_id('st_hitting_season')
 season_select = Select(hitting_season_element)
-
 season_select.select_by_value('2015')
 
-wait = wait = WebDriverWait(driver, 10)
+wait = WebDriverWait(driver, 10)
 
 team_hr_stats = wait.until(EC.visibility_of_element_located((By.ID, 'datagrid')))
 
@@ -43,25 +43,23 @@ team_hr_total = team_hr_stats.find_elements_by_tag_name('th')
 
 team_hr_total[10].click()
 
-data_div = driver.find_element_by_id('datagrid')
-data_html = data_div.get_attribute('innerHTML')
+data_div_1 = driver.find_element_by_id('datagrid')
+data_html_1 = data_div_1.get_attribute('innerHTML')
 
 import bs4
 import requests
 
-soup_1 = bs4.BeautifulSoup(data_html, 'html5lib')
-
-print(soup_1.prettify())
+soup_1 = bs4.BeautifulSoup(data_html_1, 'html5lib')
 
 
-def extract_stats_data(data_element):
-    data_html = data_element.get_attribute('innerHTML')
-    soup = bs4.BeautifulSoup(data_html, 'html5lib')
+def extract_team_hr_data(data_element):
+    data_html_1 = data_element.get_attribute('innerHTML')
+    soup_1 = bs4.BeautifulSoup(data_html_1, 'html5lib')
 
-    column_names = [t.text.replace('▼', ' ').replace('▲', ' ').strip() for t in soup.thead.tr.findAll('th')]
+    column_names = [t.text.replace('▼', ' ').replace('▲', ' ').strip() for t in soup_1.thead.tr.findAll('th')]
 
     row_lists = []
-    for row in soup.tbody.findAll('tr'):
+    for row in soup_1.tbody.findAll('tr'):
         row_lists.append([col.text for col in row.findAll('td')])
 
     df = pd.DataFrame(row_lists, columns=column_names)
@@ -72,6 +70,24 @@ def extract_stats_data(data_element):
 
     return df
 
-df = extract_stats_data(data_div_1)
+df = extract_team_hr_data(data_div_1)
+team_name = df.sort_values('HR', ascending=False).iloc[0]['Team']  # With highest HR
 
-df.to_csv('/Users/rickroma/Desktop/Assignment2/Question_1.csv')
+# Write team name string to file
+with open('/Users/rickroma/Desktop/Assignment2/Question_1.csv', 'w') as f_output:
+    f_output.write(team_name)
+
+df_al = df[df.League == 'AL']['HR'].mean()
+df_nl = df[df.League == 'NL']['HR'].mean()
+
+if df_al > df_nl:
+    print(df_al)
+else:
+    print(df_nl)
+
+
+
+
+
+
+
