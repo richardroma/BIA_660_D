@@ -215,6 +215,17 @@ hitting_average_element = driver.find_element_by_id('sp_hitting_season')
 hitting_average_select = Select(hitting_average_element)
 hitting_average_select.select_by_value('2015')
 
+wait = WebDriverWait(driver, 10)
+
+regular_stats = wait.until(EC.visibility_of_element_located((By.ID, 'datagrid')))
+
+print('The All Star dropdown in the header was loaded successfully. The mouse will move over the element after a short delay')
+normal_delay = random.normalvariate(2, 0.5)
+print('Sleeping for {} seconds'.format(normal_delay))
+time.sleep(normal_delay)
+print('Now moving mouse...')
+ActionChains(driver).move_to_element(regular_stats).perform()
+
 season_type_element = driver.find_element_by_id('sp_hitting_game_type')
 season_type_select = Select(season_type_element)
 season_type_select.select_by_value("""'R'""")
@@ -316,3 +327,25 @@ def extract_player_ab_data(data_element):
 df5 = extract_player_ab_data(data_div_5)
 
 df5.to_csv('/Users/rickroma/Desktop/Assignment2/Question_5.csv')
+
+#Question 6
+
+import http.client, urllib.request, urllib.parse, urllib.error, base64
+
+headers = {
+    # Request headers
+    'Ocp-Apim-Subscription-Key': 'f4baac1bfe674bd0b145678189dc077e',
+}
+
+params = urllib.parse.urlencode({
+})
+
+try:
+    conn = http.client.HTTPSConnection('api.fantasydata.net')
+    conn.request("GET", "/v3/mlb/stats/json/Games/2016?%s" % params, "{body}", headers)
+    response = conn.getresponse()
+    data = response.read()
+    print(data)
+    conn.close()
+except Exception as e:
+    print("[Errno {0}] {1}".format(e.errno, e.strerror))
