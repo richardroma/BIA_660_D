@@ -206,7 +206,7 @@ df3 = extract_player_hitting_data(data_div_3)
 
 df3.to_csv('/Users/rickroma/Desktop/Assignment2/Question_3.csv')
 
-filtered_df3 = df[df['AB'] > 30].sort_values('AVG')
+filtered_df3 = df3[df3['AB'] > '30'].sort_values('AVG', ascending = False)
 print(filtered_df3)
 
 
@@ -281,7 +281,7 @@ df4 = extract_player_ab_data(data_div_4)
 
 df4.to_csv('/Users/rickroma/Desktop/Assignment2/Question_4.csv')
 
-print(df4.loc[1:'Player', 'Team', 'Pos'])
+#print(df4.loc[1:'Player', 'Team', 'Pos'])
 
 #Question 5
 
