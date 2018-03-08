@@ -162,6 +162,17 @@ player_season_element = driver.find_element_by_id('sp_hitting_season')
 player_select = Select(player_season_element)
 player_select.select_by_value('2017')
 
+wait = WebDriverWait(driver, 10)
+
+regular_stats = wait.until(EC.visibility_of_element_located((By.ID, 'datagrid')))
+
+print('The All Star dropdown in the header was loaded successfully. The mouse will move over the element after a short delay')
+normal_delay = random.normalvariate(2, 0.5)
+print('Sleeping for {} seconds'.format(normal_delay))
+time.sleep(normal_delay)
+print('Now moving mouse...')
+ActionChains(driver).move_to_element(regular_stats).perform()
+
 season_type_element = driver.find_element_by_id('sp_hitting_game_type')
 season_type_select = Select(season_type_element)
 season_type_select.select_by_value("'R'")
@@ -195,8 +206,8 @@ df3 = extract_player_hitting_data(data_div_3)
 
 df3.to_csv('/Users/rickroma/Desktop/Assignment2/Question_3.csv')
 
-#filtered_df3 = df3.sort_values[(df3['AVG']) & (df3['AB'] >= '30')]
-#print(filtered_df3)
+filtered_df3 = df[df['AB'] > 30].sort_values('AVG')
+print(filtered_df3)
 
 
 #Question 4
@@ -270,7 +281,7 @@ df4 = extract_player_ab_data(data_div_4)
 
 df4.to_csv('/Users/rickroma/Desktop/Assignment2/Question_4.csv')
 
-#print(df4.loc[1:'Player', 'Team', 'Pos'])
+print(df4.loc[1:'Player', 'Team', 'Pos'])
 
 #Question 5
 
