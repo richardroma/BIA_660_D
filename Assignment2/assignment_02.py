@@ -349,3 +349,7 @@ try:
     conn.close()
 except Exception as e:
     print("[Errno {0}] {1}".format(e.errno, e.strerror))
+
+
+with open('/Users/rickroma/Desktop/Assignment2/Question_6.json', 'w') as outf:
+    outf.write(data)
