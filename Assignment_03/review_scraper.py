@@ -57,3 +57,5 @@ for review in review_total_element.find_elements_by_css_selector("div[class='a-s
 
     review_data.append(data_dict)
 print(review_data)
+
+#Next Page
