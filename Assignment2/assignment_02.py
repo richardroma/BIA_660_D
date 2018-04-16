@@ -364,3 +364,24 @@ except Exception as e:
 
 with open('/Users/rickroma/Desktop/Assignment2/Question_6.json', 'w') as outf:
     outf.write(data)
+
+while (there_is_a_next_page_of_reviews()):
+    go_next_page_of_reviews()
+
+    for review in reviews_on_page:
+        reviews_data.append(scrape_a_review(review))
+
+df = pd.DataFrame(review_data)
+df.to_json('reviews.json')
+
+while 'Next' in next_page_bar.find_elements_by_class_name("a-last"):
+    try:
+        next_page.click()
+        normal_delay = random.normalvariate(2, 0.5)
+        print('Sleeping for {} seconds'.format(normal_delay))
+        time.sleep(normal_delay)
+
+    except NoSuchElementException:
+        break
+
+    scrape_all_reviews_on_page(review_total_element)

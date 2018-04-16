@@ -21,6 +21,7 @@ import requests
 driver.get('https://www.amazon.com/RockBirds-Flashlights-Bright-Aluminum-Flashlight/product-reviews/B00X61AJYM')
 review_total_element = driver.find_element_by_id('cm_cr-review_list')
 next_page_bar = driver.find_element_by_id("""cm_cr-pagination_bar""")
+next_page = next_page_bar.find_element_by_class_name("a-last")
 
 review_data = []
 
@@ -47,16 +48,16 @@ def scrape_all_reviews_on_page(review_total_element):
         data_dict['name'] = review_name
 
         # get verified purchase status
-        review_status = soup.find('span', attrs={'class': 'a-size-mini a-color-state a-text-bold'}).text
-        data_dict['status'] = review_status
+        #review_status = soup.find('span', attrs={'class': 'a-size-mini a-color-state a-text-bold'}).text
+        #data_dict['status'] = review_status
 
         # get review text
         review_text = soup.find('span', attrs={'class': 'a-size-base review-text'}).text
         data_dict['text'] = review_text
 
         # get number of people who find review helpful
-        review_helpful = soup.find('span', attrs={'class': 'review-votes'}).text
-        data_dict['helpful'] = review_helpful
+        #review_helpful = soup.find('span', attrs={'class': 'review-votes'}).text
+        #data_dict['helpful'] = review_helpful
 
         # get top contributor text
         #review_contributor = 'top' in soup.find('a', attrs={'class': 'enthusiast-badge'}).text
@@ -64,26 +65,24 @@ def scrape_all_reviews_on_page(review_total_element):
 
         review_data.append(data_dict)
 
-    #print(review_data)
+    print(review_data)
 
-    #normal_delay = random.normalvariate(2, 0.5)
-    #print('Sleeping for {} seconds'.format(normal_delay))
-    #time.sleep(normal_delay)
+for i in range(149):
 
-        while True:
-            try:
-                next_page_bar = driver.find_element_by_id("""cm_cr-pagination_bar""")
-                next_page = next_page_bar.find_element_by_class_name("a-last")
-                next_page.click()
-                normal_delay = random.normalvariate(2, 0.5)
-                print('Sleeping for {} seconds'.format(normal_delay))
-                time.sleep(normal_delay)
+    scrape_all_reviews_on_page(review_total_element)
+    wait = WebDriverWait(driver, 10)
+    element = wait.until(EC.element_to_be_clickable((By.ID, 'cm_cr-pagination_bar')))
+    next_page_bar = driver.find_element_by_id("""cm_cr-pagination_bar""")
+    next_page = next_page_bar.find_element_by_class_name("a-last")
+    next_page.click()
+    normal_delay = random.normalvariate(5, 0.5)
+    print('Sleeping for {} seconds'.format(normal_delay))
+    time.sleep(normal_delay)
 
-                scrape_all_reviews_on_page(review_total_element)
-
-            except NoSuchElementException:
-                break
+    df = pd.DataFrame(review_data)
+    df.to_json('reviews.json')
 
 scrape_all_reviews_on_page(review_total_element)
 
-print(review_data)
+
+
