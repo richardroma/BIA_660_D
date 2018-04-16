@@ -75,7 +75,7 @@ for i in range(149):
     next_page_bar = driver.find_element_by_id("""cm_cr-pagination_bar""")
     next_page = next_page_bar.find_element_by_class_name("a-last")
     next_page.click()
-    normal_delay = random.normalvariate(5, 0.5)
+    normal_delay = random.normalvariate(4, 0.5)
     print('Sleeping for {} seconds'.format(normal_delay))
     time.sleep(normal_delay)
 
@@ -83,6 +83,8 @@ for i in range(149):
     df.to_json('reviews.json')
 
 scrape_all_reviews_on_page(review_total_element)
+
+print("Done Scraping")
 
 
 
