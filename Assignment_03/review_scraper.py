@@ -85,6 +85,7 @@ for i in range(149):
 scrape_all_reviews_on_page(review_total_element)
 
 print("Done Scraping")
+print("Done Scraping")
 
 
 
