@@ -35,7 +35,7 @@ def scrape_all_reviews_on_page(review_total_element):
         data_dict['headline'] = headline_text
 
         # get number of stars
-        review_stars = soup.find('a').text
+        review_stars = soup.find('a').text[0]
         # do something here to get only the number of stars from text like "3.0 out of 5 stars"
         data_dict['stars'] = review_stars
 
@@ -86,6 +86,4 @@ scrape_all_reviews_on_page(review_total_element)
 
 print("Done Scraping")
 print("Done Scraping")
-
-
-
+print("Done Scraping")
