@@ -67,7 +67,7 @@ def scrape_all_reviews_on_page(review_total_element):
 
     print(review_data)
 
-for i in range(149):
+for i in range(125):
 
     scrape_all_reviews_on_page(review_total_element)
     wait = WebDriverWait(driver, 10)
@@ -75,7 +75,7 @@ for i in range(149):
     next_page_bar = driver.find_element_by_id("""cm_cr-pagination_bar""")
     next_page = next_page_bar.find_element_by_class_name("a-last")
     next_page.click()
-    normal_delay = random.normalvariate(4, 0.5)
+    normal_delay = random.normalvariate(5, 0.5)
     print('Sleeping for {} seconds'.format(normal_delay))
     time.sleep(normal_delay)
 
